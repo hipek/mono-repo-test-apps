@@ -1,9 +1,8 @@
 import { useState, type FormEvent } from "react";
 
-type LoginResponse = {
-  success: boolean;
-  token?: string;
-  message: string;
+type TokenResponse = {
+  access_token: string;
+  token_type: string;
 };
 
 type ErrorResponse = {
@@ -24,20 +23,25 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/login", {
+      const formData = new FormData();
+      formData.set("username", username);
+      formData.set("password", password);
+
+      const res = await fetch("/api/token", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+        body: formData,
       });
 
-      const data: LoginResponse | ErrorResponse = await res.json();
+      const data: TokenResponse | ErrorResponse = await res.json();
 
       if (!res.ok) {
         setError((data as ErrorResponse).detail || "Login failed");
         return;
       }
 
-      setSuccess((data as LoginResponse).message);
+      const token = (data as TokenResponse).access_token;
+      localStorage.setItem("token", token);
+      setSuccess((data as TokenResponse).token_type);
     } catch {
       setError("Network error — is the backend running?");
     } finally {

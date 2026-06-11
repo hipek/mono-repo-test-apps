@@ -52,9 +52,8 @@ describe("LoginPage", () => {
 
   it("displays success message on successful login", async () => {
     window.fetch = mockFetch(200, {
-      success: true,
-      token: "abc123",
-      message: "Login successful",
+      access_token: "abc123",
+      token_type: "bearer",
     });
     const user = userEvent.setup();
 
@@ -65,7 +64,7 @@ describe("LoginPage", () => {
     await user.click(screen.getByRole("button", { name: /sign in/i }));
 
     await waitFor(() => {
-      expect(screen.getByText(/login successful/i)).toBeInTheDocument();
+      expect(screen.getByText(/bearer/i)).toBeInTheDocument();
     });
   });
 
