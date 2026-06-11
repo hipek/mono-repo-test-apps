@@ -6,8 +6,7 @@ ROOT="$(cd "$(dirname "$0")" && pwd)"
 
 echo "==> Starting backend (FastAPI)"
 cd "$ROOT/backend"
-source venv/bin/activate
-uvicorn main:app --reload --port 8000 &
+uv run uvicorn main:app --reload --port 8000 &
 BACKEND_PID=$!
 
 echo "==> Starting frontend (Next.js)"
