@@ -1,0 +1,86 @@
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import LoginPage from "@/pages/index";
+
+// ── Helpers ──────────────────────────────────────────────────────────
+
+function mockFetch(status: number, body: unknown) {
+  return jest.fn().mockResolvedValue({
+    ok: status >= 200 && status < 300,
+    json: () => Promise.resolve(body),
+  });
+}
+
+beforeEach(() => {
+  jest.resetAllMocks();
+});
+
+// ── Tests ────────────────────────────────────────────────────────────
+
+describe("LoginPage", () => {
+  it("renders form fields and submit button", () => {
+    render(<LoginPage />);
+
+    expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /sign in/i }),
+    ).toBeInTheDocument();
+  });
+
+  it("shows demo credentials hint", () => {
+    render(<LoginPage />);
+
+    expect(screen.getByText(/demo credentials/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/admin/i).length).toBe(2);
+  });
+
+  it("displays error message on failed login", async () => {
+    window.fetch = mockFetch(401, { detail: "Invalid credentials" });
+    const user = userEvent.setup();
+
+    render(<LoginPage />);
+
+    await user.type(screen.getByLabelText(/username/i), "bad");
+    await user.type(screen.getByLabelText(/password/i), "wrong");
+    await user.click(screen.getByRole("button", { name: /sign in/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/invalid credentials/i)).toBeInTheDocument();
+    });
+  });
+
+  it("displays success message on successful login", async () => {
+    window.fetch = mockFetch(200, {
+      success: true,
+      token: "abc123",
+      message: "Login successful",
+    });
+    const user = userEvent.setup();
+
+    render(<LoginPage />);
+
+    await user.type(screen.getByLabelText(/username/i), "admin");
+    await user.type(screen.getByLabelText(/password/i), "admin123");
+    await user.click(screen.getByRole("button", { name: /sign in/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/login successful/i)).toBeInTheDocument();
+    });
+  });
+
+  it("shows network error when fetch throws", async () => {
+    window.fetch = jest.fn().mockRejectedValue(new Error("Network fail"));
+    const user = userEvent.setup();
+
+    render(<LoginPage />);
+
+    await user.type(screen.getByLabelText(/username/i), "admin");
+    await user.type(screen.getByLabelText(/password/i), "admin123");
+    await user.click(screen.getByRole("button", { name: /sign in/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/network error/i)).toBeInTheDocument();
+    });
+  });
+});
