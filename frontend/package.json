@@ -2,11 +2,12 @@
   "name": "monorepo-frontend",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
+   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "jest --verbose"
+    "test": "jest --verbose",
+    "generate-types": "openapi-typescript http://localhost:8000/openapi.json -o types/api.ts --immutable"
   },
   "dependencies": {
     "next": "^14.2.5",
@@ -27,6 +28,7 @@
     "jest": "^30.4.2",
     "jest-environment-jsdom": "^30.4.1",
     "ts-jest": "^29.4.11",
+    "openapi-typescript": "^7.8.0",
     "typescript": "^6.0.3"
   }
 }
