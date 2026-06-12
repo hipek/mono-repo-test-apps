@@ -7,7 +7,7 @@ module.exports = {
   },
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/$1",
-    "\\.css$": "<rootDir>/__mocks__/styleMock.js",
+    "\\.css$": "<rootDir>/mocks/styleMock.js",
   },
-  testMatch: ["**/__tests__/**/*.test.ts?(x)"],
+  testMatch: ["**/tests/**/*.test.ts?(x)"],
 };
