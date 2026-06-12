@@ -5,7 +5,7 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/app
-      - mono_repo_data:/code/mono_repo.db
+      - mono_repo_data:/data
     restart: unless-stopped
 
   frontend:
