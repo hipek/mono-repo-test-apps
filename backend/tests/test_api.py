@@ -1,5 +1,3 @@
-"""Tests for FastAPI OAuth2 login endpoint."""
-
 from fastapi.testclient import TestClient
 
 from main import app
@@ -131,7 +129,6 @@ class TestProtected:
         assert resp.status_code == 401
 
     def test_get_me_with_expired_token(self):
-        """Token with expired timestamp should be rejected."""
         import time
 
         from jose import jwt

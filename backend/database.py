@@ -1,5 +1,3 @@
-"""SQLite database setup and helpers."""
-
 import os
 import sqlite3
 from contextlib import contextmanager
@@ -8,7 +6,6 @@ from config import DATABASE_PATH
 
 
 def _get_conn() -> sqlite3.Connection:
-    """Create or connect to the SQLite database."""
     if DATABASE_PATH != ":memory:":
         os.makedirs(os.path.dirname(DATABASE_PATH), exist_ok=True)
     conn = sqlite3.connect(DATABASE_PATH)
@@ -18,7 +15,6 @@ def _get_conn() -> sqlite3.Connection:
 
 
 def init_db():
-    """Create tables if they don't exist."""
     conn = _get_conn()
     try:
         conn.execute("""
@@ -44,7 +40,6 @@ def init_db():
 
 @contextmanager
 def get_db():
-    """Yield a database connection, auto-close."""
     conn = _get_conn()
     try:
         yield conn

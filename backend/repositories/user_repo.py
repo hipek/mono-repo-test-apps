@@ -1,12 +1,9 @@
-"""User repository — SQLite CRUD operations."""
-
 import sqlite3
 
 from database import get_db
 
 
 def create_user(username: str, hashed_password: str, full_name: str | None) -> dict:
-    """Insert a new user. Returns dict with id, username, full_name."""
     with get_db() as conn:
         try:
             conn.execute(
@@ -21,7 +18,6 @@ def create_user(username: str, hashed_password: str, full_name: str | None) -> d
 
 
 def get_by_username(username: str) -> dict | None:
-    """Get user by username. Returns None if not found."""
     with get_db() as conn:
         row = conn.execute(
             "SELECT * FROM users WHERE username = ?", (username,)
@@ -32,7 +28,6 @@ def get_by_username(username: str) -> dict | None:
 
 
 def exists(username: str) -> bool:
-    """Check if username is taken."""
     with get_db() as conn:
         row = conn.execute(
             "SELECT 1 FROM users WHERE username = ?", (username,)

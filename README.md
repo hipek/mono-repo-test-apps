@@ -27,6 +27,14 @@ Open http://localhost:3000
 make stop
 ```
 
+## CI
+
+```bash
+make ci
+```
+
+Runs format, lint, typecheck, and tests for both backend and frontend.
+
 ## API endpoints
 
 | Method | Path | Body | Description |

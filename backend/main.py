@@ -1,5 +1,3 @@
-"""FastAPI app factory."""
-
 from contextlib import asynccontextmanager
 
 import bcrypt
@@ -16,7 +14,6 @@ DEMO_USERS = [
 
 
 def _seed_demo_users():
-    """Insert demo users if database is empty."""
     from database import get_db
 
     with get_db() as conn:
@@ -34,7 +31,6 @@ def _seed_demo_users():
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Initialize database tables and seed demo users on startup."""
     init_db()
     _seed_demo_users()
     yield

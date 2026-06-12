@@ -1,12 +1,9 @@
-"""FastAPI dependency providers."""
-
-from fastapi import Depends, HTTPException, Request, status
+from fastapi import HTTPException, Request, status
 
 from services import token_service, user_service
 
 
 def get_current_user(token: str) -> dict:
-    """Validate token and return user dict."""
     user = token_service.validate_token(token)
     if not user:
         raise HTTPException(
@@ -23,7 +20,6 @@ def get_current_user(token: str) -> dict:
 
 
 def get_db_session():
-    """Yield a database connection."""
     from database import get_db
 
     with get_db() as conn:
@@ -31,7 +27,6 @@ def get_db_session():
 
 
 def get_current_user_from_request(request: Request) -> dict:
-    """Extract Bearer token from Authorization header and validate."""
     auth = request.headers.get("Authorization", "")
     if not auth.startswith("Bearer "):
         raise HTTPException(

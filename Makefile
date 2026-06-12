@@ -1,4 +1,4 @@
-.PHONY: start stop build generate-types
+.PHONY: start stop build ci ci-backend ci-frontend
 
 start:
 	docker compose up --build
@@ -9,6 +9,24 @@ stop:
 build:
 	docker compose build
 
-generate-types:
-	docker compose exec backend /code/.venv/bin/python -c "import json,sys; from main import app; sys.stdout.write(json.dumps(app.openapi()))" > /tmp/openapi.json
-	npx openapi-typescript /tmp/openapi.json -o frontend/types/api.ts --immutable
+ci: ci-backend ci-frontend
+
+ci-backend:
+	@echo "=== Backend: format ==="
+	@cd backend && .venv/bin/ruff format --check .
+	@echo "=== Backend: lint ==="
+	@cd backend && .venv/bin/ruff check .
+	@echo "=== Backend: typecheck ==="
+	@cd backend && .venv/bin/mypy .
+	@echo "=== Backend: tests ==="
+	@cd backend && .venv/bin/pytest tests/ -q
+
+ci-frontend:
+	@echo "=== Frontend: format ==="
+	@cd frontend && ./node_modules/.bin/prettier --check "**/*.{ts,tsx,js,json,css}"
+	@echo "=== Frontend: lint ==="
+	@cd frontend && ./node_modules/.bin/eslint .
+	@echo "=== Frontend: typecheck ==="
+	@cd frontend && ./node_modules/.bin/tsc --noEmit
+	@echo "=== Frontend: tests ==="
+	@cd frontend && ./node_modules/.bin/jest --verbose

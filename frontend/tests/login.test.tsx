@@ -1,8 +1,7 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/dom";
 import userEvent from "@testing-library/user-event";
 import LoginPage from "@/pages/index";
-
-// ── Helpers ──────────────────────────────────────────────────────────
 
 function mockFetch(status: number, body: unknown) {
   return jest.fn().mockResolvedValue({
@@ -15,17 +14,13 @@ beforeEach(() => {
   jest.resetAllMocks();
 });
 
-// ── Tests ────────────────────────────────────────────────────────────
-
 describe("LoginPage", () => {
   it("renders form fields and submit button", () => {
     render(<LoginPage />);
 
     expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /sign in/i }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /sign in/i })).toBeInTheDocument();
   });
 
   it("shows demo credentials hint", () => {
