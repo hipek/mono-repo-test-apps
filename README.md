@@ -6,7 +6,13 @@ Monorepo with FastAPI backend + Next.js frontend.
 
 ```
 backend/     – FastAPI HTTP API (port 8000)
+  main.py    – app factory, CORS, lifespan seed
+  routes/    – auth (login/register) + user routes
+  services/  – business logic (token, user)
+  repositories/ – DB access
+  database.py – SQLite init / connection
 frontend/    – Next.js React app (port 3000)
+  pages/index.tsx – login page
 ```
 
 ## Quick start
@@ -21,12 +27,20 @@ Open http://localhost:3000
 make stop
 ```
 
-## API endpoint
+## API endpoints
 
-`POST /api/login` – accepts `{ username, password }`, returns `{ success, token, message }`.
+| Method | Path | Body | Description |
+|--------|------|------|-------------|
+| POST | `/api/register` | `{ username, password, full_name }` | Register new user |
+| POST | `/api/token` | form-data (`username`, `password`) | Login — returns `{ access_token, token_type }` |
+| GET | `/api/me` | — (JWT Bearer required) | Get current user — returns `{ username, full_name }` |
 
-Demo credentials: `admin` / `admin123` or `user` / `pass123`.
+## Demo credentials
 
-## Rewrites
+`admin` / `admin123` or `user` / `pass123`
+
+## Dev notes
 
 Next.js rewrites proxy `/api/*` to backend container during dev.
+
+SQLite database stored in Docker volume `mono_repo_data`.
