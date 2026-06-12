@@ -12,10 +12,7 @@ build:
 ci: ci-backend ci-frontend
 
 ci-backend:
-	@cd backend && uv run ruff format --check . > /dev/null
-	@cd backend && uv run ruff check .
-	@cd backend && (uv run mypy . 2>&1 | grep -v '^Success:' | grep -v '^$$') || true
-	@cd backend && (uv run pytest tests/ -q 2>&1 | grep -E 'passed|failed|error|^[.]+' ) || true
+	@cd backend && docker build --target ci -t backend-ci . && docker run --rm backend-ci
 
 ci-frontend:
 	@cd frontend && ./node_modules/.bin/prettier --check '**/*.{ts,tsx,js,json,css}' > /dev/null

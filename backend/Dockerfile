@@ -1,4 +1,4 @@
-FROM python:3.14-slim
+FROM python:3.14-slim AS base
 
 WORKDIR /code
 
@@ -9,6 +9,12 @@ COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen
 
 COPY . .
+
+FROM base AS ci
+
+CMD ["sh", "-c", "uv run ruff format --check . && uv run ruff check . && uv run mypy . && uv run pytest tests/ -q"]
+
+FROM base AS runtime
 
 EXPOSE 8000
 
