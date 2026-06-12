@@ -50,7 +50,7 @@ describe("LoginPage", () => {
     });
   });
 
-  it("displays success message on successful login", async () => {
+  it("shows welcome card on successful login", async () => {
     window.fetch = mockFetch(200, {
       access_token: "abc123",
       token_type: "bearer",
@@ -64,8 +64,10 @@ describe("LoginPage", () => {
     await user.click(screen.getByRole("button", { name: /sign in/i }));
 
     await waitFor(() => {
-      expect(screen.getByText(/bearer/i)).toBeInTheDocument();
+      expect(screen.getByText(/welcome.*admin/i)).toBeInTheDocument();
     });
+    expect(screen.getByText(/successfully logged in/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /sign out/i })).toBeInTheDocument();
   });
 
   it("shows network error when fetch throws", async () => {

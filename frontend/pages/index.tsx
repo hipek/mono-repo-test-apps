@@ -15,6 +15,8 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [displayName, setDisplayName] = useState("");
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -41,12 +43,39 @@ export default function LoginPage() {
 
       const token = (data as TokenResponse).access_token;
       localStorage.setItem("token", token);
-      setSuccess((data as TokenResponse).token_type);
+      setDisplayName(username);
+      setIsLoggedIn(true);
     } catch {
       setError("Network error — is the backend running?");
     } finally {
       setLoading(false);
     }
+  }
+
+  if (isLoggedIn) {
+    return (
+      <div className="container">
+        <div className="card">
+          <div className="logo">
+            <h1>Welcome, {displayName}!</h1>
+            <p>You are successfully logged in</p>
+          </div>
+
+          <div className="success">Session active — token stored in localStorage</div>
+
+          <button
+            className="submit-btn"
+            onClick={() => {
+              localStorage.removeItem("token");
+              setIsLoggedIn(false);
+              setDisplayName("");
+            }}
+          >
+            Sign Out
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -59,7 +88,6 @@ export default function LoginPage() {
 
         <form className="form" onSubmit={handleSubmit}>
           {error && <div className="error">{error}</div>}
-          {success && <div className="success">{success}</div>}
 
           <div className="field">
             <label htmlFor="username">Username</label>
