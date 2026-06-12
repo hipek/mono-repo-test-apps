@@ -4,7 +4,7 @@ import time
 
 from jose import JWTError, jwt
 
-from config import ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY
+from config import ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM, SECRET_KEY
 from models import TokenResponse
 from repositories import token_repo
 

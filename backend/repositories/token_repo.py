@@ -1,10 +1,13 @@
 """Token repository — SQLite CRUD operations."""
 
 import sqlite3
+
 from database import get_db
 
 
-def create_token(token: str, username: str, created_at: float, expires_at: float) -> None:
+def create_token(
+    token: str, username: str, created_at: float, expires_at: float
+) -> None:
     """Store a token."""
     with get_db() as conn:
         conn.execute(

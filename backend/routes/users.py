@@ -2,8 +2,8 @@
 
 from fastapi import APIRouter, HTTPException, Request, status
 
-from models import UserResponse
 from dependencies import get_current_user_from_request
+from models import UserResponse
 
 router = APIRouter()
 

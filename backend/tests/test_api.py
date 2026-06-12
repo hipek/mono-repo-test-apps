@@ -1,6 +1,7 @@
 """Tests for FastAPI OAuth2 login endpoint."""
 
 from fastapi.testclient import TestClient
+
 from main import app
 
 client = TestClient(app)
@@ -131,9 +132,11 @@ class TestProtected:
 
     def test_get_me_with_expired_token(self):
         """Token with expired timestamp should be rejected."""
-        from config import SECRET_KEY, ALGORITHM
-        from jose import jwt
         import time
+
+        from jose import jwt
+
+        from config import ALGORITHM, SECRET_KEY
 
         payload = {"sub": "admin", "exp": int(time.time()) - 100}
         expired_token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)

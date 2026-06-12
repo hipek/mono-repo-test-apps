@@ -2,7 +2,7 @@
 
 from fastapi import Depends, HTTPException, Request, status
 
-from services import user_service, token_service
+from services import token_service, user_service
 
 
 def get_current_user(token: str) -> dict:
@@ -25,6 +25,7 @@ def get_current_user(token: str) -> dict:
 def get_db_session():
     """Yield a database connection."""
     from database import get_db
+
     with get_db() as conn:
         yield conn
 

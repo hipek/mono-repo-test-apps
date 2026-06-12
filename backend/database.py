@@ -1,7 +1,7 @@
 """SQLite database setup and helpers."""
 
-import sqlite3
 import os
+import sqlite3
 from contextlib import contextmanager
 
 from config import DATABASE_PATH

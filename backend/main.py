@@ -1,13 +1,13 @@
 """FastAPI app factory."""
 
-import bcrypt
 from contextlib import asynccontextmanager
+
+import bcrypt
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from database import init_db
 from routes import get_routes
-
 
 DEMO_USERS = [
     {"username": "admin", "password": "admin123", "full_name": "Admin User"},
@@ -18,6 +18,7 @@ DEMO_USERS = [
 def _seed_demo_users():
     """Insert demo users if database is empty."""
     from database import get_db
+
     with get_db() as conn:
         count = conn.execute("SELECT COUNT(*) FROM users").fetchone()[0]
         if count > 0:

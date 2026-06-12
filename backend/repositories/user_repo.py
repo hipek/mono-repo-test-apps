@@ -23,7 +23,9 @@ def create_user(username: str, hashed_password: str, full_name: str | None) -> d
 def get_by_username(username: str) -> dict | None:
     """Get user by username. Returns None if not found."""
     with get_db() as conn:
-        row = conn.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
+        row = conn.execute(
+            "SELECT * FROM users WHERE username = ?", (username,)
+        ).fetchone()
         if row is None:
             return None
         return dict(row)
@@ -32,5 +34,7 @@ def get_by_username(username: str) -> dict | None:
 def exists(username: str) -> bool:
     """Check if username is taken."""
     with get_db() as conn:
-        row = conn.execute("SELECT 1 FROM users WHERE username = ?", (username,)).fetchone()
+        row = conn.execute(
+            "SELECT 1 FROM users WHERE username = ?", (username,)
+        ).fetchone()
         return row is not None

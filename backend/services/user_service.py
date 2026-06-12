@@ -6,7 +6,9 @@ from models import UserResponse
 from repositories import user_repo
 
 
-def register_user(username: str, password: str, full_name: str | None = None) -> UserResponse:
+def register_user(
+    username: str, password: str, full_name: str | None = None
+) -> UserResponse:
     """Register a new user with hashed password."""
     if user_repo.exists(username):
         raise ValueError("Username already exists")
