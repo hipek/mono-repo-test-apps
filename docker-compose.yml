@@ -4,14 +4,16 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./backend:/app
-      - mono_repo_data:/app/mono_repo.db
+      - ./backend:/code
+      - mono_repo_data:/code/mono_repo.db
     restart: unless-stopped
 
   frontend:
     build: ./frontend
     ports:
       - "3000:3000"
+    volumes:
+      - ./frontend:/app
     depends_on:
       - backend
     environment:
