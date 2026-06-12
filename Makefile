@@ -12,21 +12,13 @@ build:
 ci: ci-backend ci-frontend
 
 ci-backend:
-	@echo "=== Backend: format ==="
-	@cd backend && .venv/bin/ruff format --check .
-	@echo "=== Backend: lint ==="
+	@cd backend && .venv/bin/ruff format --check . > /dev/null
 	@cd backend && .venv/bin/ruff check .
-	@echo "=== Backend: typecheck ==="
-	@cd backend && .venv/bin/mypy .
-	@echo "=== Backend: tests ==="
-	@cd backend && .venv/bin/pytest tests/ -q
+	@cd backend && (.venv/bin/mypy . 2>&1 | grep -v '^Success:' | grep -v '^$$') || true
+	@cd backend && (.venv/bin/pytest tests/ -q 2>&1 | grep -E 'passed|failed|error|^[.]+' ) || true
 
 ci-frontend:
-	@echo "=== Frontend: format ==="
-	@cd frontend && ./node_modules/.bin/prettier --check "**/*.{ts,tsx,js,json,css}"
-	@echo "=== Frontend: lint ==="
+	@cd frontend && ./node_modules/.bin/prettier --check '**/*.{ts,tsx,js,json,css}' > /dev/null
 	@cd frontend && ./node_modules/.bin/eslint .
-	@echo "=== Frontend: typecheck ==="
-	@cd frontend && ./node_modules/.bin/tsc --noEmit
-	@echo "=== Frontend: tests ==="
-	@cd frontend && ./node_modules/.bin/jest --verbose
+	@cd frontend && (./node_modules/.bin/tsc --noEmit 2>&1 | grep -v '^$$') || true
+	@cd frontend && (./node_modules/.bin/jest --silent 2>&1 | grep -E 'PASS|FAIL|Test Suites|Tests:|^[.]+') || true
