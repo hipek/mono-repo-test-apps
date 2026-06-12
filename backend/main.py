@@ -1,21 +1,12 @@
 """FastAPI app factory."""
 
 import bcrypt
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from database import init_db
 from routes import get_routes
-
-app = FastAPI(title="Monorepo API", version="0.1.0")
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 
 DEMO_USERS = [
@@ -40,11 +31,23 @@ def _seed_demo_users():
         conn.commit()
 
 
-@app.on_event("startup")
-def startup():
-    """Initialize database tables and seed demo users."""
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Initialize database tables and seed demo users on startup."""
     init_db()
     _seed_demo_users()
+    yield
+
+
+app = FastAPI(title="Monorepo API", version="0.1.0", lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
