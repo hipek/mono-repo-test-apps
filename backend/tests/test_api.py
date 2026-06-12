@@ -131,7 +131,7 @@ class TestProtected:
 
     def test_get_me_with_expired_token(self):
         """Token with expired timestamp should be rejected."""
-        from main import SECRET_KEY, ALGORITHM
+        from config import SECRET_KEY, ALGORITHM
         from jose import jwt
         import time
 
