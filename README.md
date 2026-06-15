@@ -1,4 +1,4 @@
-# mono-repo-question
+# mono-repo-test-apps
 
 Monorepo with FastAPI backend + Next.js frontend.
 
