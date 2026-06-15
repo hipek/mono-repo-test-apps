@@ -21,6 +21,8 @@ frontend/    – Next.js React app (port 3000)
 make start
 ```
 
+Uses pnpm for frontend package management.
+
 Open http://localhost:3000
 
 ```bash
