@@ -1,4 +1,4 @@
-.PHONY: start stop build ci ci-backend ci-frontend e2e
+.PHONY: start stop build ci ci-backend ci-frontend e2e clean
 
 start:
 	docker compose up --build
@@ -22,3 +22,7 @@ ci-frontend:
 
 e2e:
 	@cd e2e_tests && pnpm test
+
+clean:
+	docker compose down
+	docker rmi -f $(shell docker images --format '{{.Repository}}:{{.Tag}}' | grep mono-repo-test-apps) 2>/dev/null || true
