@@ -1,4 +1,4 @@
-.PHONY: start stop build ci ci-backend ci-frontend
+.PHONY: start stop build ci ci-backend ci-frontend e2e
 
 start:
 	docker compose up --build
@@ -19,3 +19,6 @@ ci-frontend:
 	@cd frontend && ./node_modules/.bin/eslint .
 	@cd frontend && (./node_modules/.bin/tsc --noEmit 2>&1 | grep -v '^$$') || true
 	@cd frontend && (./node_modules/.bin/jest --silent 2>&1 | grep -E 'PASS|FAIL|Test Suites|Tests:|^[.]+') || true
+
+e2e:
+	@cd e2e_tests && pnpm test

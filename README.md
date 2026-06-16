@@ -13,6 +13,7 @@ backend/     – FastAPI HTTP API (port 8000)
   database.py – SQLite init / connection
 frontend/    – Next.js React app (port 3000)
   pages/index.tsx – login page
+e2e_tests/   – Playwright E2E tests (auth + API)
 ```
 
 ## Quick start
@@ -36,6 +37,19 @@ make ci
 ```
 
 Runs format, lint, typecheck, and tests for both backend and frontend.
+
+## E2E tests
+
+```bash
+make e2e
+```
+
+Runs Playwright E2E tests against running containers. Requires `make start` first.
+
+```bash
+cd e2e_tests && npx playwright test --ui   # interactive UI mode
+cd e2e_tests && npx playwright test --headed  # browser visible
+```
 
 ## API endpoints
 
