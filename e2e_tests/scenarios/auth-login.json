@@ -1,0 +1,64 @@
+{
+  "description": "Login scenarios for the monorepo app",
+  "base_url": "http://localhost:3000",
+  "scenarios": [
+    {
+      "id": "valid-login-admin",
+      "description": "Login with valid admin credentials",
+      "username": "admin",
+      "password": "admin123",
+      "expected": {
+        "status": "success",
+        "redirect": true
+      }
+    },
+    {
+      "id": "valid-login-user",
+      "description": "Login with valid demo user credentials",
+      "username": "user",
+      "password": "pass123",
+      "expected": {
+        "status": "success",
+        "redirect": true
+      }
+    },
+    {
+      "id": "invalid-password",
+      "description": "Login with wrong password",
+      "username": "admin",
+      "password": "wrongpassword",
+      "expected": {
+        "status": "error",
+        "message": "Invalid credentials"
+      }
+    },
+    {
+      "id": "invalid-username",
+      "description": "Login with non-existent username",
+      "username": "nonexistent",
+      "password": "somepass",
+      "expected": {
+        "status": "error",
+        "message": "Invalid credentials"
+      }
+    },
+    {
+      "id": "empty-username",
+      "description": "Login with empty username",
+      "username": "",
+      "password": "admin123",
+      "expected": {
+        "status": "validation_error"
+      }
+    },
+    {
+      "id": "empty-password",
+      "description": "Login with empty password",
+      "username": "admin",
+      "password": "",
+      "expected": {
+        "status": "validation_error"
+      }
+    }
+  ]
+}

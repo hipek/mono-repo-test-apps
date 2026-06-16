@@ -1,0 +1,10 @@
+{
+  "generated_at": "2026-06-16",
+  "total_scenario_files": 3,
+  "total_scenarios": 14,
+  "files": [
+    "auth-login.json",
+    "api-health.json",
+    "api-auth.json"
+  ]
+}

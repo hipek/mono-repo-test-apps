@@ -1,0 +1,17 @@
+{
+  "description": "API health check and public endpoint scenarios",
+  "base_url": "http://localhost:3000",
+  "scenarios": [
+    {
+      "id": "health-check",
+      "description": "GET / returns service status",
+      "method": "GET",
+      "path": "/",
+      "expected_status": 200,
+      "expected_body": {
+        "service": "monorepo-api",
+        "status": "ok"
+      }
+    }
+  ]
+}
